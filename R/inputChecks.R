@@ -3,7 +3,7 @@
 # ============================================================================
 
 runInputChecks <- function(data, choiceName, obsIDName, parNames, randPars,
-  priceName, randPrice, modelSpace, weightsName, clusterName) {
+  priceName, randPrice, modelSpace, weightsName, clusterName, individualName, timeName) {
   if (! is.null(priceName)) {
     if (priceName %in% parNames) {
       stop(
@@ -87,6 +87,26 @@ runInputChecks <- function(data, choiceName, obsIDName, parNames, randPars,
         '\nPlease double-check the provided data/random parameter name(s).'
       )
     }
+    }
+  }
+
+  #Check that time and individual identifiers are present in data
+  if(!is.null(individualName)){
+    if(! individualName %in% dataColumnNames){
+      stop(
+        'You have specified a individual name that is not present in the data provided:\n',
+        as.character(individualName),
+        '\nPlease double-check the provided data/individual name.'
+      )
+    }
+  }
+  if(!is.null(timeName)){
+    if(! timeName %in% dataColumnNames){
+      stop(
+        'You have specified a time name that is not present in the data provided:\n',
+        as.character(timeName),
+        '\nPlease double-check the provided data/time name.'
+      )
     }
   }
 

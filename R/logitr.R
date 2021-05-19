@@ -37,7 +37,12 @@
 #' estimated. Defaults to `FALSE`. Specification of a clusterName or
 #' weightsName will override the user setting and set this to `TRUE' (a
 #' warning will be displayed in this case).
-#'
+#' @param panel Determines whether or not to use panel calculation in Mixed Logit
+#' models. Defaults to `FALSE`
+#' @param individualName Indicates name of column that identifies individuals within data.
+#' Optional. Defaults to `NULL`.
+#' @param timeName Indicates name of column that identifies time within data.
+#' Optional. Defaults to `NULL`.
 #' @param options A list of options.
 #'
 #' @details
@@ -129,6 +134,9 @@ logitr <- function(
   weightsName = NULL,
   clusterName = NULL,
   robust = FALSE,
+  panel = FALSE,
+  individualName = NULL,
+  timeName = NULL,
   options = list()
 ) {
   modelInputs <- getModelInputs(

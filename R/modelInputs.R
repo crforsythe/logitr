@@ -6,12 +6,12 @@
 # Creates a list of the data and other information needed for running the model
 getModelInputs <- function(
   data, choiceName, obsIDName, parNames, randPars, priceName, randPrice,
-  modelSpace, weightsName, clusterName, robust, options) {
+  modelSpace, weightsName, clusterName, robust, panel, individualName, timeName, options) {
   data <- as.data.frame(data) # tibbles break things
   # Setup pars
   runInputChecks(
     data, choiceName, obsIDName, parNames, randPars, priceName,
-    randPrice, modelSpace, weightsName, clusterName)
+    randPrice, modelSpace, weightsName, clusterName, individualName, timeName)
   # Get the design matrix, recoding parameters that are categorical
   # or have interactions
   parNames_orig <- parNames
@@ -58,13 +58,26 @@ getModelInputs <- function(
     numClusters <- getNumClusters(clusterIDs)
   }
 
+  individualIDs <- NULL
+  timeIDs <- NULL
+  if(!is.null(individualName)){
+    individualIDs <- as.matrix(data[individualName])
+  }
+  if(!is.null(timeName)){
+    timeIDs <- as.matrix(data[timeName])
+  }
+
   # Create the modelInputs list
   modelInputs <- list(
     price = price, X = X, choice = choice, obsID = obsID,
     weights = weights, priceName = priceName, parNames = parNames_orig,
     randPars = randPars_orig, parNameList = parNameList, parSetup = parSetup,
     scaleFactors = NA, modelSpace = modelSpace, modelType = "mnl",
-    weightsUsed = weightsUsed, clusterName = clusterName, clusterIDs = clusterIDs, numClusters = numClusters, robust = robust, options = options
+    weightsUsed = weightsUsed, clusterName = clusterName, clusterIDs = clusterIDs,
+    numClusters = numClusters, robust = robust, panel = panel,
+    individualName = individualName, timeName=timeName,
+    individualIDs = individualIDs, timeIDs = timeIDs,
+    options = options
   )
   if (options$scaleInputs) {
     modelInputs <- scaleInputs(modelInputs)
